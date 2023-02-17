@@ -20,3 +20,12 @@ CSV HEADER;"
 in order of ticket.sql
 
 the same thing can be applied for the postgres database related to auth.
+
+## problems
+
+the persistent volumes were not deleted with `docker-compose down`
+
+to fix this we used
+```
+docker-compose down -v
+```
