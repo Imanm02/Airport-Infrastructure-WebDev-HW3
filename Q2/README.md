@@ -21,6 +21,12 @@ in order of ticket.sql
 
 the same thing can be applied for the postgres database related to auth.
 
+## dbeaver
+
+to install dbeaver on your system follow [this](https://computingforgeeks.com/install-and-configure-dbeaver-on-ubuntu-debian/) guide.
+
+
+
 ## problems
 
 the persistent volumes were not deleted with `docker-compose down`
