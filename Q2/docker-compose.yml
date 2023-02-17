@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  postgres1:
+    image: postgres
+    container_name: "my-postgres1"
+    restart: unless-stopped
+    # network_mode: host
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data1:/var/lib/postgresql/data
+      # - ./storage/postgres1/data:/var/lib/postgresql/data
+    ports:
+      - target: 5432
+        published: 5433
+        protocol: tcp
+        mode: host
+
+  postgres2:
+    image: postgres
+    container_name: "my-postgres2"
+    restart: unless-stopped
+    # network_mode: host
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data2:/var/lib/postgresql/data
+      # - ./storage/postgres2/data:/var/lib/postgresql/data
+    ports:
+      - target: 5432
+        published: 5434
+        protocol: tcp
+        mode: host
+
+  redis:
+    image: redis
+    container_name: "my-redis"
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+      # - ./storage/redis/data:/data
+    ports:
+      - target: 6379
+        published: 6380
+        protocol: tcp
+        mode: host
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+
+volumes:
+    postgres_data1:
+    postgres_data2:
+    redis_data:
