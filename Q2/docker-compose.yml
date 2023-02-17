@@ -11,6 +11,7 @@ services:
       POSTGRES_DB: mydb
     volumes:
       - postgres_data1:/var/lib/postgresql/data
+      - ./fake-data/TicketDatabase/:/fake-data/
       # - ./storage/postgres1/data:/var/lib/postgresql/data
     ports:
       - target: 5432
@@ -28,7 +29,7 @@ services:
       POSTGRES_DB: mydb
     volumes:
       - postgres_data2:/var/lib/postgresql/data
-      # - ./storage/postgres2/data:/var/lib/postgresql/data
+      - ./fake-data/TicketDatabase/:/fake-data/
     ports:
       - target: 5432
         published: 5434
