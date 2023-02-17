@@ -5,7 +5,6 @@ services:
     image: postgres
     container_name: "my-postgres1"
     restart: unless-stopped
-    # network_mode: host
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
@@ -23,7 +22,6 @@ services:
     image: postgres
     container_name: "my-postgres2"
     restart: unless-stopped
-    # network_mode: host
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
