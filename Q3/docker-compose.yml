@@ -1,0 +1,113 @@
+version: '3.9'
+
+services:
+  postgres1:
+    image: postgres
+    container_name: "my-postgres1"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data1:/var/lib/postgresql/data
+      - ./fake-data/TicketDatabase/:/fake-data/
+    # expose:
+    #   - "5432"
+    ports:
+      - target: 5432
+        published: 5433
+        protocol: tcp
+        mode: host
+
+  # postgres2:
+  #   image: postgres
+  #   container_name: "my-postgres2"
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_USER: myuser
+  #     POSTGRES_PASSWORD: mypassword
+  #     POSTGRES_DB: mydb
+  #   volumes:
+  #     - postgres_data2:/var/lib/postgresql/data
+  #     - ./fake-data/TicketDatabase/:/fake-data/
+  #   # expose:
+  #   #   - "5432"
+  #   ports:
+  #     - target: 5432
+  #       published: 5434
+  #       protocol: tcp
+  #       mode: host
+
+  redis:
+    image: redis
+    container_name: "my-redis"
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    # expose:
+    #   - "6379"
+    ports:
+      - target: 6379
+        published: 6380
+        protocol: tcp
+        mode: host
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  authcore:
+    restart: on-failure
+    environment:
+      - REDIS_URL=redis:6379
+      - REDIS_DB=1
+      - DATABASE_URL=postgres://postgres1:mypassword@mydb:5432/postgres
+      - HTTP_LISTEN=0.0.0.0:51691
+      - GRPC_LISTEN_ADDRESS=0.0.0.0:21901
+    # build:
+    #   context: ./authCore
+    depends_on:
+      - redis
+      - postgres1
+
+  ticket:
+    restart: on-failure
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - PG_USER=myuser
+      - PG_PASSWORD=mypassword
+      - PG_DATABASE=ticketservice
+      - PG_PORT=somerandomnumber
+      - PG_HOST=127.0.0.1
+      - BANK_URL=localhost:8000
+      - RECEIPT_ID=123456
+    # build:
+    #   context: ./ticket
+    depends_on:
+      - postgres1
+      - authcore
+
+  bank:
+    restart: on-failure
+    # environment:
+    #   - HOST=0.0.0.0
+    #   - PORT=3000
+    #   - PG_USER=myuser
+    #   - PG_PASSWORD=mypassword
+    #   - PG_DATABASE=ticketservice
+    #   - PG_PORT=somerandomnumber
+    #   - PG_HOST=127.0.0.1
+    #   - BANK_URL=localhost:8000
+    #   - RECEIPT_ID=123456
+    build:
+      context: ./bank
+    # depends_on:
+    #   - postgres1
+    #   - authcore
+
+
+volumes:
+    postgres_data1:
+    postgres_data2:
+    redis_data:
