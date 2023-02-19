@@ -31,7 +31,7 @@ to install dbeaver on your system follow [this](https://computingforgeeks.com/in
 
 the persistent volumes were not deleted with `docker-compose down`
 
-to fix this we used
+to fix it we used
 ```
 docker-compose down -v
 ```
