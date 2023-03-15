@@ -3,4 +3,4 @@ WORKDIR /bank
 COPY . .
 RUN pip install django djangorestframework
 RUN python manage.py migrate
-CMD ["python", "magage.py", "runserver"]
+CMD ["python", "manage.py", "runserver"]
