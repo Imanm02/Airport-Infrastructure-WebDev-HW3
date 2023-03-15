@@ -6,7 +6,7 @@
 * Database: Redis & Postgres
 * Deployment: Docker and Docker Compose
 
-In this part, we dockerized each part of the project so it can be run just by one command.
+In this part, we dockerized each part of the project so it could be run just by one command.
 ```
 docker-compose up
 ```
@@ -18,7 +18,7 @@ docker-compose up
 git clone https://github.com/Imanm02/Aiport-Backend-WebDev-HW2.git
 ```
 
-2. Start the Docker containers: 
+2. Start the Docker containers (in Q4 folder): 
 ```
 docker-compose up
 ```
